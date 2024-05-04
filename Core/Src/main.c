@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 #include "lwip.h"
 #include "gpio.h"
 
@@ -72,6 +73,7 @@ int indx = 0; //send index
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 void sendPackage(char *package);
 /* USER CODE END PFP */
@@ -215,6 +217,12 @@ int main(void)
 	xTaskCreate(taskETH, "ETH example", 1024, NULL, 1, &handleETH);
 	vTaskStartScheduler();
   /* USER CODE END 2 */
+
+  /* Call init function for freertos objects (in freertos.c) */
+  MX_FREERTOS_Init();
+
+  /* Start scheduler */
+  osKernelStart();
 
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
